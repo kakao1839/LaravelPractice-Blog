@@ -14,3 +14,6 @@
 // http://{ホスト名}/admin/form に GET でアクセスすると、AdminBlogController の form メソッドを実行するという意味
 // name メソッドでエイリアスをつけることができる
 Route::get('admin/form', 'AdminBlogController@form')->name('admin_form');
+
+// http://{ホスト名}/admin/post に POST でアクセスすると、AdminBlogController の post メソッドを実行する
+Route::post('admin/post', 'AdminBlogController@post')->name('admin_post');
