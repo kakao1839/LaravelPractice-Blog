@@ -37,3 +37,6 @@ Route::prefix('admin')->group(function() {
     Route::post('delete', 'AdminBlogController@delete')->name('admin_delete');
     Route::get('list', 'AdminBlogController@list')->name('admin_list');
 });
+
+//  http://{ホスト名}/ と入力すれば、FrontBlogController の index メソッドを実行する
+Route::get('/', 'FrontBlogController@index')->name('front_index');

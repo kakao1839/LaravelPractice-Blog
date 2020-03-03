@@ -76,6 +76,7 @@ class AdminBlogController extends Controller
         // with メソッドで、セッションに次のリクエスト限りのデータを保存する
         return redirect()->route('admin_form')->with('message', '記事を保存しました');
     }
+
     /**
      * ブログ記事削除処理
      *
@@ -98,6 +99,20 @@ class AdminBlogController extends Controller
         $message = ($result) ? '記事を削除しました' : '記事の削除に失敗しました。';
 
         // フォーム画面へリダイレクト
-        return redirect()->route('admin_form')->with('message', $message);
+        return redirect()->route('admin_list')->with('message', $message);
+    }
+
+    // 1ページ当たりの表示件数
+    const NUM_PER_PAGE = 10;
+
+    /**
+     * ブログ記事一覧画面
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function list()
+    {
+        $list = $this->article->getArticleList(self::NUM_PER_PAGE);
+        return view('admin_blog.list', compact('list'));
     }
 }

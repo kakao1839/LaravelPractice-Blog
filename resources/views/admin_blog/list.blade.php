@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>ブログ記事一覧</title>
     <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"><!-- Bootstrap本体 -->
     <link rel="stylesheet" href="{{ asset('/css/blog.css') }}">
 </head>
 
