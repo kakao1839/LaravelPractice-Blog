@@ -44,7 +44,7 @@
             <form method="POST" action="{{ route('admin_post') }}">
                 <div class="form-group">
                     <label>日付</label>
-                    <input class="form-control" name="post_date" size="20" value="" placeholder="日付を入力して下さい。">
+                    <input class="form-control" name="post_date" size="20" value="" placeholder="YYYY/MM/DD">
                 </div>
 
                 <div class="form-group">
@@ -61,6 +61,16 @@
                 {{--CSRFトークンが生成される--}}
                 {{ csrf_field() }}
             </form>
+
+            @if ($article_id)
+                <br>
+                <form action="{{ route('admin_delete') }}" method="POST">
+                    <input type="submit" class="btn btn-primary btn-sm" value="削除">
+                    <input type="hidden" name="article_id" value="{{ $article_id }}">
+                    {{ csrf_field() }}
+                </form>
+            @endif
+
         </div>
     </div>
 </div>

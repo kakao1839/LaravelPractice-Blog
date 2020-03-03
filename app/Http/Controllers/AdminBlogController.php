@@ -20,13 +20,36 @@ class AdminBlogController extends Controller
     /**
      * ブログ記事入力フォーム
      *
+     * @param  int $article_id 記事ID
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function form()
+    public function form(int $article_id = null)
     {
-        // resources/views 配下にある、どのテンプレートを使うか指定。ディレクトリの階層はピリオドで表現できる
-        // この例では resources/views/admin_blog/form.blade.php が読み込まれる
-        return view('admin_blog.form');
+        // メソッドの引数に指定すれば、ルートパラメータを取得できる
+
+        // Eloquent モデルはクエリビルダとしても動作するので find メソッドで記事データを取得
+        // 返り値は null か App\Models\Article Object
+        $article = $this->article->find($article_id);
+
+        // 記事データがあれば toArray メソッドで配列にしておき、フォーマットした post_date を入れる
+        $input = [];
+        if ($article) {
+            $input = $article->toArray();
+            $input['post_date'] = $article->post_date_text;
+        } else {
+            $article_id = null;
+        }
+
+        // old ヘルパーを使うと、直前のリクエストのフラッシュデータを取得できる
+        // ここではバリデートエラーとなったときに、入力していた値を old ヘルパーで取得する
+        // DBから取得した値よりも優先して表示するため、array_merge の第二引数に設定する
+        $input = array_merge($input, old());
+
+        // View テンプレートへ値を渡すときは、第二引数に連想配列を設定する
+        // View テンプレートでは 連想配列のキー名で値を取り出せる
+        // return view('admin_blog.form', ['input' => $input, 'article_id' => $article_id]);
+        // compact 関数を使うと便利
+        return view('admin_blog.form', compact('input', 'article_id'));
     }
 
     /**
@@ -52,5 +75,29 @@ class AdminBlogController extends Controller
         // route ヘルパーでリダイレクト先を指定。ルートのエイリアスを使う場合は route ヘルパーを使う
         // with メソッドで、セッションに次のリクエスト限りのデータを保存する
         return redirect()->route('admin_form')->with('message', '記事を保存しました');
+    }
+    /**
+     * ブログ記事削除処理
+     *
+     * @param AdminBlogRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete(AdminBlogRequest $request)
+    {
+        // 記事IDの取得
+        $article_id = $request->input('article_id');
+
+        // Article モデルを取得して delete メソッドを実行することで削除できる
+        // このとき万が一 $article が null になる場合も想定して実装するのが良い（今回は紹介のみで使わないので割愛）
+//        $article = $this->article->find($article_id);
+//        $article->delete();
+
+        // 主キーの値があるなら destroy メソッドで削除することができる
+        // 引数は配列でも可。返り値は削除したレコード数
+        $result = $this->article->destroy($article_id);
+        $message = ($result) ? '記事を削除しました' : '記事の削除に失敗しました。';
+
+        // フォーム画面へリダイレクト
+        return redirect()->route('admin_form')->with('message', $message);
     }
 }
