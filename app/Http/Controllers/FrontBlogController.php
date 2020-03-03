@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
 use App\Http\Requests\FrontBlogRequest;
+use App\Models\Article;
 
 class FrontBlogController extends Controller
 {

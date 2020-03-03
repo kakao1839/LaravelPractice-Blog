@@ -36,6 +36,9 @@ Route::prefix('admin')->group(function() {
     Route::post('post', 'AdminBlogController@post')->name('admin_post');
     Route::post('delete', 'AdminBlogController@delete')->name('admin_delete');
     Route::get('list', 'AdminBlogController@list')->name('admin_list');
+    Route::get('category', 'AdminBlogController@category')->name('admin_category');
+    Route::post('category/edit', 'AdminBlogController@editCategory')->name('admin_category_edit');
+    Route::post('category/delete', 'AdminBlogController@deleteCategory')->name('admin_category_delete');
 });
 
 //  http://{ホスト名}/ と入力すれば、FrontBlogController の index メソッドを実行する
