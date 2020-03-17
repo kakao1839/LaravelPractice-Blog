@@ -29,15 +29,4 @@ class Category extends Model
         }
         return $query->get();
     }
-
-    /**
-     * Article モデルのリレーション
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function articles()
-    {
-        // 1つのカテゴリーは多くの記事と関係しているので hasMany メソッドを利用する
-        return $this->hasMany('App\Models\Article', 'category_id', 'category_id');
-    }
 }
